@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dev-pod
+
+spec:
+  containers:
+  - image: nginx
+    name: c1
+    ports:
+    - containerPort: 80
+    env: 
+    - name: name
+      valueFrom: 
+        configMapKeyRef:
+          name: cm2
+          key: name 
+    volumeMounts:
+    - name: volume1
+      mountPath: "/tmp/var"
+      readOnly: true
+  volumes:
+  - name: volume1
+    configMap:
+      name: cm2
+      items:
+      - key: "env.var"
+        path: "env.var"
+      
